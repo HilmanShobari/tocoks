@@ -1,0 +1,8 @@
+{
+  "tocoks": {
+    "store_url": "http://localhost:3021",
+    "merchant_id": "",
+    "secret_key": "",
+    "product_ids": {}
+  }
+}
