@@ -153,8 +153,8 @@ button { font: inherit; color: inherit; }
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(18, 7, 3, 0.86) 0%, rgba(18, 7, 3, 0.55) 30%, rgba(18, 7, 3, 0) 48%),
-    linear-gradient(0deg, rgba(18, 7, 3, 0.6) 0%, rgba(18, 7, 3, 0) 22%);
+    linear-gradient(90deg, rgba(18, 7, 3, 0.62) 0%, rgba(18, 7, 3, 0.28) 14%, rgba(18, 7, 3, 0.06) 24%, rgba(18, 7, 3, 0) 34%),
+    linear-gradient(0deg, rgba(18, 7, 3, 0.5) 0%, rgba(18, 7, 3, 0) 20%);
   opacity: var(--shade, 1);
 }
 
