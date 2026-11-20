@@ -13,7 +13,9 @@
     },
     "backend": {
       "root": "backend",
-      "runtime": "node"
+      "runtime": "node",
+      "entrypoint": "vercel.mjs",
+      "devCommand": "npm run start"
     }
   },
   "rewrites": [

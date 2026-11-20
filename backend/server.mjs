@@ -6,6 +6,10 @@ import { Checkout } from './checkout.mjs';
 import { loadEnvironment, loadAfihubConfig, loadCatalogs, loadMerchants, serviceRoot, brandSlug, defaultPort } from './config.mjs';
 
 export function createApp(checkout) {
+  return createServer(createHandler(checkout));
+}
+
+export function createHandler(checkout) {
   const json = (res, status, value) => {
     res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff' });
     res.end(JSON.stringify(value));
@@ -22,7 +26,7 @@ export function createApp(checkout) {
     try { return JSON.parse(Buffer.concat(chunks).toString('utf8')); }
     catch { throw Object.assign(new Error('JSON tidak valid.'), { status: 400 }); }
   }
-  return createServer(async (req, res) => {
+  return async (req, res) => {
     try {
       const url = new URL(req.url, 'http://checkout.local');
       const origin = req.headers.origin;
@@ -59,13 +63,12 @@ export function createApp(checkout) {
     } catch (error) {
       json(res, error.status || 500, { success: false, message: error.status ? error.message : 'Layanan checkout sedang bermasalah.' });
     }
-  });
+  };
 }
 
-export async function start() {
+export async function createCheckout(dbPath = resolve(serviceRoot, process.env.STOREFRONT_DB_PATH || 'data/orders.sqlite')) {
   loadEnvironment();
   const config = loadAfihubConfig();
-  const dbPath = resolve(serviceRoot, process.env.STOREFRONT_DB_PATH || 'data/orders.sqlite');
   await mkdir(dirname(dbPath), { recursive: true });
   const checkout = new Checkout({ dbPath, catalogs: await loadCatalogs(), merchants: loadMerchants,
     apiKey: process.env.STOREFRONT_XENDIT_API_KEY,
@@ -75,8 +78,13 @@ export async function start() {
     checkout.close();
     throw new Error('Database berisi pesanan brand lain. Gunakan database milik brand ini.');
   }
+  return checkout;
+}
+
+export async function start() {
+  const checkout = await createCheckout();
   const server = createApp(checkout);
-  const port = Number(process.env.STOREFRONT_PORT || defaultPort);
+  const port = Number(process.env.PORT || process.env.STOREFRONT_PORT || defaultPort);
   const interval = Number(process.env.STOREFRONT_SYNC_INTERVAL_SECONDS || 15);
   if (!Number.isInteger(port) || port < 1 || port > 65535 || !Number.isFinite(interval) || interval < 5) throw new Error('Port atau interval checkout tidak valid.');
   const host = process.env.STOREFRONT_HOST || '127.0.0.1';

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "node server.mjs",
-    "build": "node --check server.mjs && node --check checkout.mjs && node --check config.mjs && node --check setup-local.mjs",
+    "build": "node --check server.mjs && node --check vercel.mjs && node --check checkout.mjs && node --check config.mjs && node --check setup-local.mjs",
     "test": "node --test test/*.test.mjs",
     "setup:local": "node setup-local.mjs"
   },
