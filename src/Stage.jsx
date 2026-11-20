@@ -26,10 +26,14 @@ function createFrameStore(res, onProgress) {
   const total = CLIPS.reduce((sum, clip) => sum + clip.frames, 0);
   const queue = [];
   CLIPS.forEach((clip, c) => {
+    queue.push([c, 0], [c, clip.frames - 1]);
+  });
+  CLIPS.forEach((clip, c) => {
     // Kerangka kasar dulu (setiap frame ke-6) agar scrub langsung terasa, lalu sisanya.
-    for (let i = 0; i < clip.frames; i += 6) queue.push([c, i]);
-    queue.push([c, clip.frames - 1]);
-    for (let i = 0; i < clip.frames; i++) if (i % 6) queue.push([c, i]);
+    for (let i = 6; i < clip.frames - 1; i += 6) queue.push([c, i]);
+  });
+  CLIPS.forEach((clip, c) => {
+    for (let i = 1; i < clip.frames - 1; i++) if (i % 6) queue.push([c, i]);
   });
   const seen = new Set();
   const order = queue.filter(([c, i]) => { const key = c + ':' + i; if (seen.has(key)) return false; seen.add(key); return true; });
@@ -94,10 +98,21 @@ export default function Stage({ cart, onAddToHampers, onBuySingle, onActiveChang
     let raf = 0;
     let lastActive = -1;
     let heroGeom = null;
+    let targetClip = -1;
+    let disposed = false;
 
-    const store = createFrameStore(mobile ? 'm' : 'd', (share, clip, frame) => {
+    const store = createFrameStore(mobile ? 'm' : 'd', (share, clip) => {
       setLoadedShare(share);
-      if (!shown || shown.startsWith(clip + ':')) { shown = ''; request(); }
+      if (targetClip === clip) { shown = ''; request(); }
+    });
+    const stills = jars.map((product, clip) => {
+      const image = new Image();
+      image.decoding = 'async';
+      image.onload = () => {
+        if (!disposed && targetClip === clip) { shown = ''; request(); }
+      };
+      image.src = product.still;
+      return image;
     });
 
     function measureHero() {
@@ -162,6 +177,7 @@ export default function Stage({ cart, onAddToHampers, onBuySingle, onActiveChang
 
     function draw(pos) {
       const { clip, frame } = frameAt(pos, reduced);
+      targetClip = clip;
       if (!heroGeom) heroGeom = measureHero();
       const full = fullGeom();
       const k = reduced ? (pos > 30 ? 1 : 0) : ease(pos / 80);
@@ -170,14 +186,16 @@ export default function Stage({ cart, onAddToHampers, onBuySingle, onActiveChang
       const key = `${clip}:${frame}:${Math.round(geom.x)}:${Math.round(geom.y)}:${Math.round(geom.w)}:${width}x${height}`;
       if (key === shown) return;
       const image = store.get(clip, frame);
+      const still = stills[clip];
+      const source = image || (still?.complete && still.naturalWidth ? still : null);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       paintBackground();
-      if (image) {
+      if (source) {
         const h = (geom.w * 9) / 16;
-        context.drawImage(image, geom.x, geom.y, geom.w, h);
+        context.drawImage(source, geom.x, geom.y, geom.w, h);
         feather(geom.x, geom.y, geom.w, h);
         shown = key;
-      }
+      } else shown = '';
     }
 
     function overlays(pos) {
@@ -224,6 +242,7 @@ export default function Stage({ cart, onAddToHampers, onBuySingle, onActiveChang
     window.addEventListener('scroll', request, { passive: true });
     document.fonts?.ready.then(() => { heroGeom = null; shown = ''; request(); });
     return () => {
+      disposed = true;
       store.cancel();
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
