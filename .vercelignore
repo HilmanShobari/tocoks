@@ -1,6 +1,5 @@
 # Aset desain dan backend tidak diperlukan untuk build frontend.
 design/
-backend/
 start-local.command
 start-local.ps1
 start-local.sh
