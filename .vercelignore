@@ -1,0 +1,14 @@
+# Aset desain dan backend tidak diperlukan untuk build frontend.
+design/
+start-local.command
+start-local.ps1
+start-local.sh
+PRD.md
+README.md
+afihub.setup.json
+
+# Jangan pernah unggah rahasia lokal.
+.env
+.env.*
+backend/.env
+backend/.env.*
