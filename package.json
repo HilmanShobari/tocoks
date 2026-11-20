@@ -1,0 +1,23 @@
+{
+  "name": "tocoks",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && npm --prefix backend run build",
+    "preview": "vite preview",
+    "backend:start": "npm --prefix backend start",
+    "backend:test": "npm --prefix backend test"
+  },
+  "dependencies": {
+    "@afihub/browser": "file:vendor/afihub-browser-0.2.0.tgz",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@afihub/cli": "file:afihub-cli-0.4.0.tgz",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.7"
+  }
+}

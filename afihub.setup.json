@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "framework": "vite",
+  "entry": "src/main.jsx",
+  "backend": "backend",
+  "checkoutPath": "/api/v1/storefront/checkout",
+  "generated": {
+    "src/afihub/tracking.js": "9015b393267f2beb9b2ea7676b594237e57f4c0422f48d32301ecb6edfe06241",
+    "src/afihub/bootstrap.js": "98c4445faf66cf21137cf770914723da29a5e9de2075712e35bb489c8a820c00",
+    "backend/afihub/client.mjs": "2e38a23f4d4d3883a2f642cc78c2ffe1c9e59b0c2ba90019f30dcd56d7bff35f"
+  },
+  "paymentHook": "requires_verified_order_hook",
+  "verification": "not_yet_verified",
+  "instructions": [
+    "Backend checkout menyimpan request.session_token sebagai afihub_click_id pada order sebelum invoice.",
+    "Setelah gateway diverifikasi, outbox worker membaca order dan memanggil createAfihubClient().sendOrder(transaction, {status: event.status, paymentVerified: true}).",
+    "Uji link kreator → checkout sandbox → Konversi dan komisi. Installer bukan bukti integrasi aktif."
+  ]
+}

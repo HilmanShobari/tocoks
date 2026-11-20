@@ -1,0 +1,17 @@
+{
+  "name": "tocoks-checkout",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "build": "node --check server.mjs && node --check checkout.mjs && node --check config.mjs && node --check setup-local.mjs",
+    "test": "node --test test/*.test.mjs",
+    "setup:local": "node setup-local.mjs"
+  },
+  "dependencies": {
+    "@afihub/node": "file:../vendor/afihub-node-0.2.0.tgz"
+  }
+}
