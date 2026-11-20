@@ -27,7 +27,10 @@ for (const segment of SEGMENTS) {
 export const TOTAL = cursor;
 export const HOLDS = SEGMENTS.filter(segment => segment.kind === 'hold');
 
-export const frameUrl = (clip, res, index) => `/frames/${CLIPS[clip].id}/${res}/${String(index + 1).padStart(3, '0')}.webp`;
+// Naikkan versi ini setiap kali frame diganti, agar browser tidak memakai cache lama.
+// Samakan juga query `v=` pada preload di index.html.
+export const FRAME_VERSION = 'esrgan-test-2026-11-20';
+export const frameUrl = (clip, res, index) => `/frames/${CLIPS[clip].id}/${res}/${String(index + 1).padStart(3, '0')}.webp?v=${FRAME_VERSION}`;
 
 /** Posisi scroll (vh) → frame yang ditampilkan. */
 export function frameAt(pos, reducedMotion) {
