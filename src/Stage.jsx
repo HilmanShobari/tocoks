@@ -280,16 +280,6 @@ export default function Stage({ cart, onAddToHampers, onBuySingle, onActiveChang
             <p className="eyebrow">{String(i + 1).padStart(2, '0')} / 04 — {product.name}</p>
             <h2 id={'variant-' + product.id}>{product.name}</h2>
             <p className="variant-tagline">{product.tagline}</p>
-            <div className="variant-facts">
-              <div>
-                <span className="fact-label">Komposisi</span>
-                <p>{product.composition}</p>
-              </div>
-              <div>
-                <span className="fact-label">Dipanggang</span>
-                <p>Setiap pagi, dalam batch kecil</p>
-              </div>
-            </div>
             <p className="variant-price">
               <strong>{formatPrice(product.price)}</strong> <span>/ {product.weight}</span> <s>{formatPrice(product.compareAt)}</s>
             </p>

@@ -44,7 +44,10 @@ function Header({ active, onJump, cart, totals, onOpenCart }) {
         ))}
       </nav>
       <div className="header-actions">
-        <a className="pill pill-accent" href="#hampers">Hampers: {cart.draft.length} dari {brand.hamperSlots}</a>
+        <a className="pill pill-accent" href="#hampers" aria-label={`Hampers: ${cart.draft.length} dari ${brand.hamperSlots}`}>
+          <span className="desktop-only">Hampers: {cart.draft.length} dari {brand.hamperSlots}</span>
+          <span className="mobile-only">Hampers {cart.draft.length}/{brand.hamperSlots}</span>
+        </a>
         {totals.count > 0 && (
           <button type="button" className="pill" onClick={onOpenCart}>
             Keranjang · {totals.count}
