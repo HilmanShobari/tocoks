@@ -119,7 +119,7 @@ export default function Stage({ cart, onAddToHampers, onBuySingle, onActiveChang
       const slot = heroSlotRef.current?.getBoundingClientRect();
       if (!slot || !slot.width) return null;
       // Di layar kecil, nastar diperbesar agar tidak terlihat seperti titik di antara huruf.
-      const scale = width < 760 ? 1.9 : 1;
+      const scale = width < 760 ? 1.25 : 1;
       const W = (slot.width / COOKIE_IN_FRAME.d) * scale;
       const H = (W * 9) / 16;
       return { x: slot.left + slot.width / 2 - COOKIE_IN_FRAME.x * W, y: slot.top + slot.height / 2 - COOKIE_IN_FRAME.y * H, w: W };

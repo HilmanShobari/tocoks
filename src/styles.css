@@ -580,6 +580,7 @@ button { font: inherit; color: inherit; }
   .variant-actions { gap: 12px; flex-wrap: nowrap; }
   .variant-actions .button { flex: 1; min-width: 0; padding: 0 12px; font-size: 14px; white-space: nowrap; }
   .variant-actions .text-link { flex: 0 0 auto; font-size: 14px; white-space: nowrap; }
+  .toast { bottom: calc(18px + env(safe-area-inset-bottom)); max-width: calc(100vw - 32px); width: max-content; padding: 8px 12px; border-radius: 14px; font-size: 13px; line-height: 1.3; text-align: center; }
   .stage-dots { right: 10px; top: 30%; }
   .hampers-body { grid-template-columns: 1fr; }
   .hamper-tray { padding: 14px; gap: 10px; }

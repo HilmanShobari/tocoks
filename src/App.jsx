@@ -65,7 +65,6 @@ function KitchenStrip() {
     return () => clearInterval(timer);
   }, []);
   const open = now >= minutes(brand.kitchen.open) && now < minutes(brand.kitchen.close);
-  const sameDay = now < minutes(brand.kitchen.sameDayCutoff);
   return (
     <section className="kitchen-strip" aria-label="Informasi toko">
       <div>
@@ -74,7 +73,7 @@ function KitchenStrip() {
       </div>
       <div>
         <span className="fact-label">Pengiriman</span>
-        <p>{sameDay ? `Pesan sebelum ${brand.kitchen.sameDayCutoff}, dikirim hari ini` : 'Pesanan sekarang dikirim besok pagi'}</p>
+        <p>Pesan sekarang dikirim H+3.</p>
       </div>
       <div>
         <span className="fact-label">WhatsApp</span>
@@ -194,7 +193,7 @@ function Storefront({ cartApi }) {
     }
     addToDraft(product.id);
     const filled = cart.draft.length + 1;
-    setToast(filled === brand.hamperSlots ? `${product.name} masuk. Hampers sudah penuh!` : `${product.name} masuk hampers (${filled}/${brand.hamperSlots}).`);
+    setToast(`${product.short} masuk hampers (${filled}/${brand.hamperSlots}).`);
   }, [cart.draft.length, addToDraft]);
 
   const buySingle = useCallback(product => {
